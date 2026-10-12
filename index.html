@@ -18,48 +18,26 @@
        1. VARIABLES (couleurs, polices)
        Mise en page : un hero avec ton nom en très grand et une pile
        de tes créations, puis travaux, parcours, compétences, contact.
-       Le site suit le thème clair ou sombre de l'appareil du visiteur.
+       Les couleurs reprennent ton image de fond : jaune, orange,
+       et le brun du contour de tes logos Hisko Design.
        ========================================================== */
     :root {
-      --fond:        #f2f4f8;   /* gris bleuté très clair */
-      --surface:     #ffffff;   /* cartes et zones mises en avant */
-      --encre:       #111733;   /* texte principal, bleu nuit */
-      --encre-douce: #4a5170;   /* texte secondaire */
-      --trait:       #d9deea;   /* bordures fines */
-      --accent:      #2f55f5;   /* bleu électrique : liens, boutons, détails */
-      --accent-texte:#ffffff;   /* texte posé sur l'accent */
-      --vert-dispo:  #12a150;   /* pastille "disponible" */
+      --fond:        #fff3d6;   /* crème clair : petites zones de fond */
+      --surface:     rgba(255, 248, 232, 0.92); /* cartes crème, un peu transparentes */
+      --encre:       #3a220e;   /* texte principal : brun très foncé */
+      --encre-douce: #6b4524;   /* texte secondaire : brun moyen */
+      --trait:       rgba(92, 52, 16, 0.22);    /* bordures fines brunes */
+      --accent:      #7a3a0e;   /* brun du contour des logos : boutons, nom, détails */
+      --accent-texte:#fff3d6;   /* texte posé sur l'accent */
+      --vert-dispo:  #1f8a46;   /* pastille "disponible" */
+
+      /* Ton image de fond. Elle doit être dans le dossier images/ à côté de index.html */
+      --image-fond: url("images/fond.jpg");
 
       --police-titre: "Archivo", "Arial Black", Impact, sans-serif;
       --police-texte: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
       --largeur-max: 1160px;
       color-scheme: light;
-    }
-
-    /* Thème sombre automatique */
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --fond:        #0d1226;
-        --surface:     #161c36;
-        --encre:       #eceffa;
-        --encre-douce: #a5acc8;
-        --trait:       #2a3254;
-        --accent:      #7d93ff;
-        --accent-texte:#0d1226;
-        --vert-dispo:  #3ddc84;
-        color-scheme: dark;
-      }
-    }
-    :root[data-theme="dark"] {
-      --fond:        #0d1226;
-      --surface:     #161c36;
-      --encre:       #eceffa;
-      --encre-douce: #a5acc8;
-      --trait:       #2a3254;
-      --accent:      #7d93ff;
-      --accent-texte:#0d1226;
-      --vert-dispo:  #3ddc84;
-      color-scheme: dark;
     }
 
     /* ==========================================================
@@ -71,12 +49,27 @@
 
     body {
       margin: 0;
-      background: var(--fond);
+      background: #ffb35c; /* couleur de secours si l'image ne charge pas */
       color: var(--encre);
       font-family: var(--police-texte);
       font-size: 1.0625rem;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* L'IMAGE DE FOND
+       Elle est posée sur un calque fixe derrière tout le site :
+       elle reste en place quand on fait défiler la page (marche aussi sur téléphone).
+       Le dégradé crème par-dessus adoucit l'image pour que le texte reste lisible :
+       augmente 0.35 pour plus de douceur, baisse-le pour voir l'image plus fort. */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(rgba(255, 244, 214, 0.35), rgba(255, 244, 214, 0.35)),
+        var(--image-fond) center / cover no-repeat;
     }
 
     img { display: block; max-width: 100%; }
@@ -115,7 +108,7 @@
       margin-bottom: 2rem;
     }
 
-    .section-titre p { margin: 0; max-width: 34rem; color: var(--encre-douce); }
+    .section-titre p { margin: 0; max-width: 34rem; color: var(--encre); font-weight: 500; }
 
     /* ==========================================================
        3. EN-TÊTE
@@ -169,14 +162,14 @@
        ========================================================== */
     .hero { padding-block: clamp(3rem, 8vw, 6rem) clamp(3rem, 7vw, 5rem); overflow: hidden; }
 
-    .hero .conteneur {
+    .hero .hero-grille {
       display: grid;
       gap: clamp(2.5rem, 6vw, 4rem);
       align-items: center;
     }
 
     @media (min-width: 900px) {
-      .hero .conteneur { grid-template-columns: 1.15fr 1fr; }
+      .hero .hero-grille { grid-template-columns: 1.15fr 1fr; }
     }
 
     .dispo {
@@ -214,7 +207,8 @@
       margin: 1.6rem 0 2.2rem;
       max-width: 33rem;
       font-size: clamp(1.08rem, 2vw, 1.22rem);
-      color: var(--encre-douce);
+      font-weight: 500;
+      color: var(--encre);
     }
 
     .hero .accroche strong { color: var(--encre); font-weight: 600; }
@@ -262,7 +256,7 @@
       overflow: hidden;
       background: var(--surface);
       border: 1px solid var(--trait);
-      box-shadow: 0 18px 40px -18px rgba(17, 23, 51, 0.45);
+      box-shadow: 0 18px 40px -18px rgba(90, 45, 10, 0.55);
       transition: transform .5s cubic-bezier(.2,.8,.2,1);
     }
 
@@ -270,7 +264,8 @@
 
     .pile .carte-cover  { width: 42%; aspect-ratio: 3 / 4; left: 2%;  top: 12%; transform: rotate(-9deg); }
     .pile .carte-logo   { width: 38%; aspect-ratio: 1;     right: 4%; top: 0;   transform: rotate(7deg); }
-    .pile .carte-banniere { width: 78%; aspect-ratio: 16 / 9; left: 14%; bottom: 0; transform: rotate(-2deg); z-index: 2; }
+    .pile .carte-banniere { width: 92%; left: 4%; bottom: 8%; transform: rotate(-2deg); z-index: 2; }
+    .pile .carte-banniere img { height: auto; }
 
     .pile:hover .carte-cover    { transform: rotate(-4deg) translate(-6px, -6px); }
     .pile:hover .carte-logo     { transform: rotate(3deg) translate(6px, -6px); }
@@ -309,7 +304,7 @@
       padding: 0.5rem 1rem;
       border-radius: 999px;
       border: 1px solid var(--trait);
-      background: transparent;
+      background: var(--surface);
       color: var(--encre-douce);
       font: 600 0.95rem var(--police-texte);
       cursor: pointer;
@@ -328,8 +323,11 @@
       gap: 1.1rem;
     }
 
+    /* Les bannières YouTube sont très larges : elles prennent toute la ligne */
+    .piece-banniere { grid-column: 1 / -1; }
+
     @media (min-width: 760px) {
-      .piece-banniere { grid-column: span 2; }
+      .piece-overlay { grid-column: span 2; }
     }
 
     .piece { margin: 0; display: flex; flex-direction: column; gap: 0.6rem; }
@@ -346,11 +344,16 @@
     }
 
     .piece img { width: 100%; transition: transform .4s ease; }
-    .piece button:hover img { transform: scale(1.04); }
+    .piece button:hover img { transform: scale(1.03); }
 
-    .piece-banniere img { aspect-ratio: 16 / 9; object-fit: cover; }
-    .piece-logo img     { aspect-ratio: 1;      object-fit: cover; }
-    .piece-cover img    { aspect-ratio: 3 / 4;  object-fit: cover; }
+    .piece-banniere img { height: auto; }             /* garde la forme d'origine */
+    .piece-logo img     { aspect-ratio: 1;     object-fit: cover; }
+    .piece-cover img    { aspect-ratio: 3 / 4; object-fit: cover; }
+
+    /* Images au fond transparent (PNG) : fond adapté pour bien les voir */
+    .piece-transparent img { object-fit: contain; }
+    .piece-overlay button  { background: #2a1a0c; }
+    .piece-overlay img     { aspect-ratio: 16 / 9; object-fit: contain; }
 
     .piece figcaption {
       display: flex;
@@ -385,7 +388,12 @@
     /* ==========================================================
        6. PARCOURS (frise chronologique)
        ========================================================== */
-    .section-alt { background: var(--surface); border-block: 1px solid var(--trait); }
+    .section-alt {
+      background: var(--surface);
+      border-block: 1px solid var(--trait);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
 
     .frise { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
 
@@ -532,7 +540,8 @@
     .pied {
       padding-block: 2rem;
       font-size: 0.9rem;
-      color: var(--encre-douce);
+      font-weight: 500;
+      color: var(--encre);
     }
 
     .pied .conteneur { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
@@ -570,7 +579,7 @@
 
     <!-- ========== HERO ========== -->
     <section class="hero">
-      <div class="conteneur">
+      <div class="conteneur hero-grille">
         <div>
           <span class="dispo">Disponible pour une alternance</span>
           <h1>Hilaire <span class="nom">Ndeyenou</span></h1>
@@ -587,13 +596,13 @@
         <!-- Les trois images de la pile : tu peux les changer pour tes créations préférées -->
         <div class="pile" aria-hidden="true">
           <figure class="carte-cover">
-            <img src="https://static.wixstatic.com/media/3de0c4_de1cda25384e488989aecfbd3a80b8a3~mv2.jpg" alt="">
+            <img src="images/cover-fifa-17-manchester.jpg" alt="">
           </figure>
           <figure class="carte-logo">
-            <img src="https://static.wixstatic.com/media/3de0c4_b9712a8406bf4847874e51d269ef4e9d~mv2.png" alt="">
+            <img src="images/logo-hisko-2017.jpg" alt="">
           </figure>
           <figure class="carte-banniere">
-            <img src="https://static.wixstatic.com/media/3de0c4_000cf401ea2e4066ba49df7755ea8092~mv2.jpg" alt="">
+            <img src="images/banniere-fifa-18.jpg" alt="">
           </figure>
         </div>
       </div>
@@ -625,63 +634,73 @@
         </div>
 
         <div class="galerie">
-          <!-- Pour ajouter une création : copie un bloc <figure>, puis change
-               data-categorie (logo, banniere ou cover), la classe piece-…,
-               l'adresse de l'image (src), le texte alt et la légende. -->
+          <!-- Pour ajouter une création : mets l'image dans le dossier images/,
+               copie un bloc <figure>, puis change data-categorie (logo, banniere ou cover),
+               la classe piece-…, le nom du fichier (src), le texte alt et la légende. -->
 
           <figure class="piece piece-banniere" data-categorie="banniere">
-            <button type="button"><img src="https://static.wixstatic.com/media/3de0c4_1c0b4bf5c480498fa1f63eb4915b632e~mv2.jpg" alt="Bannière YouTube Hisko" loading="lazy"></button>
-            <figcaption>Bannière Hisko <span>Bannière YouTube</span></figcaption>
+            <button type="button"><img src="images/banniere-fifa-18.jpg" alt="Bannière YouTube Hisko sur le thème de FIFA 18" loading="lazy"></button>
+            <figcaption>Bannière Hisko, FIFA 18 <span>Bannière YouTube</span></figcaption>
           </figure>
 
           <figure class="piece piece-logo" data-categorie="logo">
-            <button type="button"><img src="https://static.wixstatic.com/media/3de0c4_85c976dab20d42c7aa72c4d6f553486d~mv2.jpg" alt="Logo BIZBIZ" loading="lazy"></button>
-            <figcaption>BIZBIZ <span>Logo</span></figcaption>
-          </figure>
-
-          <figure class="piece piece-cover" data-categorie="cover">
-            <button type="button"><img src="https://static.wixstatic.com/media/3de0c4_de1cda25384e488989aecfbd3a80b8a3~mv2.jpg" alt="Cover FIFA 17 personnalisée" loading="lazy"></button>
-            <figcaption>FIFA 17 <span>Cover</span></figcaption>
-          </figure>
-
-          <figure class="piece piece-banniere" data-categorie="banniere">
-            <button type="button"><img src="https://static.wixstatic.com/media/3de0c4_10675a40bb35479ab171c0b1229c50c6~mv2.jpg" alt="Bannière BIZBIZ" loading="lazy"></button>
-            <figcaption>BIZBIZ <span>Bannière YouTube</span></figcaption>
+            <button type="button"><img src="images/logo-hisko-2017.jpg" alt="Logo Hisko 2017, personnage en capuche" loading="lazy"></button>
+            <figcaption>Hisko 2017 <span>Logo</span></figcaption>
           </figure>
 
           <figure class="piece piece-logo" data-categorie="logo">
-            <button type="button"><img src="https://static.wixstatic.com/media/3de0c4_b9712a8406bf4847874e51d269ef4e9d~mv2.png" alt="Logo Hisko" loading="lazy"></button>
+            <button type="button"><img src="images/logo-hisko.jpg" alt="Logo Hisko, personnage avec une manette" loading="lazy"></button>
             <figcaption>Hisko <span>Logo</span></figcaption>
           </figure>
 
-          <figure class="piece piece-banniere" data-categorie="banniere">
-            <button type="button"><img src="https://static.wixstatic.com/media/3de0c4_241ce9ad22ac413ebdae89e10e047ff9~mv2.png" alt="Overlay de stream créé sans template" loading="lazy"></button>
-            <figcaption>Overlay de stream <span>Créé sans template</span></figcaption>
+          <figure class="piece piece-cover" data-categorie="cover">
+            <button type="button"><img src="images/cover-fifa-18-mbappe.jpg" alt="Cover FIFA 18 personnalisée avec Mbappé" loading="lazy"></button>
+            <figcaption>FIFA 18, Mbappé <span>Cover PS4</span></figcaption>
           </figure>
 
-          <figure class="piece piece-cover" data-categorie="cover">
-            <button type="button"><img src="https://static.wixstatic.com/media/3de0c4_c39c723dbeda42b39b6926bd897b98dd~mv2.jpg" alt="Deuxième cover FIFA 17 personnalisée" loading="lazy"></button>
-            <figcaption>FIFA 17, version 2 <span>Cover</span></figcaption>
+          <figure class="piece piece-banniere" data-categorie="banniere">
+            <button type="button"><img src="images/banniere-bizbiz.jpg" alt="Bannière YouTube BizBiz Fut" loading="lazy"></button>
+            <figcaption>BizBiz Fut <span>Bannière YouTube</span></figcaption>
           </figure>
 
           <figure class="piece piece-logo" data-categorie="logo">
-            <button type="button"><img src="https://static.wixstatic.com/media/3de0c4_c28e2f3f5eba4909a297566b11b13520~mv2.jpg" alt="Logo Hisko, autre version" loading="lazy"></button>
-            <figcaption>Hisko, variante <span>Logo</span></figcaption>
-          </figure>
-
-          <figure class="piece piece-banniere" data-categorie="banniere">
-            <button type="button"><img src="https://static.wixstatic.com/media/3de0c4_54c805c6a37746ba8765b77436e83d37~mv2.jpg" alt="Bannière Team Soccer King" loading="lazy"></button>
-            <figcaption>Team Soccer King <span>Bannière d'équipe</span></figcaption>
+            <button type="button"><img src="images/logo-bizbiz.jpg" alt="Logo BizBiz, personnage en maillot violet" loading="lazy"></button>
+            <figcaption>BizBiz <span>Logo</span></figcaption>
           </figure>
 
           <figure class="piece piece-cover" data-categorie="cover">
-            <button type="button"><img src="https://static.wixstatic.com/media/3de0c4_87505d2db9ae470b8fd92d1f8cfad015~mv2.jpg" alt="Troisième cover personnalisée" loading="lazy"></button>
-            <figcaption>Cover personnalisée <span>Cover</span></figcaption>
+            <button type="button"><img src="images/cover-fifa-17-manchester.jpg" alt="Cover FIFA 17 personnalisée avec Ibrahimović à Manchester United" loading="lazy"></button>
+            <figcaption>FIFA 17, Manchester <span>Cover Xbox One</span></figcaption>
+          </figure>
+
+          <figure class="piece piece-cover" data-categorie="cover">
+            <button type="button"><img src="images/cover-fifa-17.jpg" alt="Cover FIFA 17 personnalisée avec Griezmann et Neymar" loading="lazy"></button>
+            <figcaption>FIFA 17 <span>Cover Xbox One</span></figcaption>
           </figure>
 
           <figure class="piece piece-banniere" data-categorie="banniere">
-            <button type="button"><img src="https://static.wixstatic.com/media/3de0c4_6a156a9532f24de7a8dd1c632e52a99d~mv2.jpg" alt="Bannière créée en 2018" loading="lazy"></button>
-            <figcaption>Bannière 2018 <span>Bannière YouTube</span></figcaption>
+            <button type="button"><img src="images/banniere-team-soccer-king.jpg" alt="Bannière de l'équipe Team Soccer King" loading="lazy"></button>
+            <figcaption>Team Soccer King <span>Bannière d'équipe</span></figcaption>
+          </figure>
+
+          <figure class="piece piece-logo piece-transparent" data-categorie="logo">
+            <button type="button"><img src="images/avatar-hisko.png" alt="Avatar Hisko dessiné, personnage avec une manette" loading="lazy"></button>
+            <figcaption>Avatar Hisko <span>Illustration</span></figcaption>
+          </figure>
+
+          <figure class="piece piece-overlay" data-categorie="banniere">
+            <button type="button"><img src="images/overlay-stream.png" alt="Overlay de stream Hisko créé sans template" loading="lazy"></button>
+            <figcaption>Overlay de stream <span>Créé sans template</span></figcaption>
+          </figure>
+
+          <figure class="piece piece-banniere" data-categorie="banniere">
+            <button type="button"><img src="images/banniere-xbox.jpg" alt="Bannière YouTube Hisko, version Xbox" loading="lazy"></button>
+            <figcaption>Bannière Hisko, Xbox <span>Bannière YouTube</span></figcaption>
+          </figure>
+
+          <figure class="piece piece-banniere" data-categorie="banniere">
+            <button type="button"><img src="images/banniere-hisko-2017.jpg" alt="Bannière YouTube Hisko 2017" loading="lazy"></button>
+            <figcaption>Bannière Hisko 2017 <span>Bannière YouTube</span></figcaption>
           </figure>
         </div>
       </div>
